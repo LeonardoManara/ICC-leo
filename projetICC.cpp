@@ -139,7 +139,8 @@ int i_non_vide(vector<bool> &liste_bool, int nbF) {
 }
 
 
-// commento
+// commento1
+// commento 2
 int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, int nbF, int &d1) {
 
     int nbCycle = 1 ;
