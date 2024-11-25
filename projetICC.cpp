@@ -139,8 +139,6 @@ int i_non_vide(vector<bool> &liste_bool, int nbF) {
 }
 
 
-// commento1
-// commento 2
 int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, int nbF, int &d1) {
 
     int nbCycle = 1 ;
@@ -204,11 +202,11 @@ int main () {
 
     affiche_etat_initial(liste_queues, nbF) ;
 
-    cout << "Nombre de cylces" << endl ; 
-    cout << nombre_de_cycles(liste_queues, liste_bool, nbF, d1) << endl ; 
+   // cout << "Nombre de cylces" << endl ; 
+    //cout << nombre_de_cycles(liste_queues, liste_bool, nbF, d1) << endl ; 
 
-    cout << "Déplacement total" << endl ;
-    cout << d1 << endl ; 
+   // cout << "Déplacement total" << endl ;
+   //cout << d1 << endl ; 
 
 }  
 
