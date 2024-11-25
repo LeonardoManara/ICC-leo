@@ -147,7 +147,7 @@ int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, 
     if (liste_bool[0]) {
         cout << i << "       " ;
         i =  i_non_vide(liste_bool, nbF) ;
-        cout << i << endl ; 
+        cout << i << "      " << "0 0" << endl ; 
              
     } 
     
@@ -161,7 +161,8 @@ int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, 
 
         c = liste_queues[i].front() ;
         liste_queues[i].pop() ;
-        cout << i <<"     "<< c << endl ;  
+        cout << i <<"     "<< c << endl ; 
+         
         d1 = d1 + abs(c-i) ; 
 
         if (liste_queues[i].empty()) {
