@@ -121,9 +121,8 @@ void affiche_etat_initial (vector<queue<int> > liste_queues, int nbF) {
 
 int i_non_vide(vector<bool> &liste_bool, int nbF) {
 
-    int j = 0 ; 
 
-    for (int j ; j < nbF ; j ++ ) {
+    for ( int j = 0 ; j < nbF ; j ++ ) {
 
        if  (liste_bool[j] == false) {
 
@@ -133,25 +132,27 @@ int i_non_vide(vector<bool> &liste_bool, int nbF) {
 
     }   
 
-    j = j + 1  ;
+ return nbF ; 
 
-    return j ; 
 }
 
 
 int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, int nbF, int &d1) {
 
     int nbCycle = 1 ;
-    int i, c = 0 ;
+    int i = 0 ;
+    int c = 0 ;
+    cout << "NEQLI" << endl ; 
 
-    while (i < nbF ) {
+    if (liste_bool[0]) {
+        cout << i << "       " ;
+        i =  i_non_vide(liste_bool, nbF) ;
+        cout << i << endl ; 
+             
+        } 
     
-        if (liste_bool[0]) {
-
-            nbCycle = nbCycle + 1 ; 
-            i =  i_non_vide(liste_bool, nbF) ;
-            d1 = d1 + i ; 
-        }        
+    while (i < nbF ) {
+           
             
         if (i >= nbF ) {
             
@@ -160,7 +161,7 @@ int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, 
 
         c = liste_queues[i].front() ;
         liste_queues[i].pop() ;
-
+        cout << i <<"     "<< c << endl ;  
         d1 = d1 + abs(c-i) ; 
 
         if (liste_queues[i].empty()) {
@@ -173,15 +174,21 @@ int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, 
         nbCycle = nbCycle + 1 ; 
 
         if (liste_bool[i]) {
-
-            nbCycle = nbCycle + 1 ; 
+            cout << i << "     " ; 
             i =  i_non_vide(liste_bool, nbF) ; 
-            d1 = d1 + abs(c-i) ;
+            
+            if (i == nbF) {
+                cout << c << endl ;
+                break ; 
 
+            }
+            nbCycle = nbCycle + 1 ; 
+            d1 = d1 + abs(c-i) ;
+            cout << i << endl ; 
         }
 
     }
-
+    cout << "Nombre de cylces" << endl ;
     return nbCycle  ;  
 
 }
@@ -201,17 +208,11 @@ int main () {
     construction_liste_bool(liste_queues, nbF , liste_bool);
 
     affiche_etat_initial(liste_queues, nbF) ;
+ 
+    cout << nombre_de_cycles(liste_queues, liste_bool, nbF, d1) << endl ; 
 
-   // cout << "Nombre de cylces" << endl ; 
-    //cout << nombre_de_cycles(liste_queues, liste_bool, nbF, d1) << endl ; 
+    cout << "Déplacement total" << endl ;
+    cout << d1 << endl ; 
 
-   // cout << "Déplacement total" << endl ;
-   //cout << d1 << endl ; 
-
-}  
-
-
-
-
-
+}
 
