@@ -207,8 +207,8 @@ int main () {
     cout << "Nombre de cylces" << endl ; 
     cout << nombre_de_cycles(liste_queues, liste_bool, nbF, d1) << endl ; 
 
-   // cout << "Déplacement total" << endl ;
-   // cout << d1 ;
+    cout << "Déplacement total" << endl ;
+    cout << d1 << endl ; 
 
 }  
 
