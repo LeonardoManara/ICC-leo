@@ -149,7 +149,7 @@ int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, 
         i =  i_non_vide(liste_bool, nbF) ;
         cout << i << endl ; 
              
-        } 
+    } 
     
     while (i < nbF ) {
            
@@ -185,6 +185,7 @@ int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, 
             nbCycle = nbCycle + 1 ; 
             d1 = d1 + abs(c-i) ;
             cout << i << endl ; 
+            
         }
 
     }
