@@ -142,6 +142,7 @@ int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, 
     int nbCycle = 1 ;
     int i = 0 ;
     int c = 0 ;
+    bool iscan = false  ; 
     cout << "NEQLI" << endl ; 
 
     if (liste_bool[0]) {
@@ -161,9 +162,18 @@ int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, 
 
         c = liste_queues[i].front() ;
         liste_queues[i].pop() ;
-        cout << i <<"     "<< c << endl ; 
-         
-        d1 = d1 + abs(c-i) ; 
+        cout << i <<"       "<< c << "        " ; 
+
+        if (iscan == false) {
+            cout << "0 1" << endl ;
+
+        }  else { 
+
+            cout << "1 1" << endl ;
+
+        } 
+        d1 = d1 + abs(c-i) ;
+        iscan = true ;
 
         if (liste_queues[i].empty()) {
 
@@ -175,24 +185,22 @@ int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, 
         nbCycle = nbCycle + 1 ; 
 
         if (liste_bool[i]) {
-            cout << i << "     " ; 
+            cout << i << "       " ; 
             i =  i_non_vide(liste_bool, nbF) ; 
             
             if (i == nbF) {
-                cout << c << endl ;
+                cout << c << "        "<<"1 0" << endl;
                 break ; 
 
             }
             nbCycle = nbCycle + 1 ; 
             d1 = d1 + abs(c-i) ;
-            cout << i << endl ; 
-            
+            cout << i << "        " << "1 0" << endl ;
+            iscan = false   ;      
         }
-
     }
     cout << "Nombre de cylces" << endl ;
     return nbCycle  ;  
-
 }
 
 
@@ -205,6 +213,7 @@ int main () {
 
     vector<queue<int> > liste_queues(nbF);
     vector<bool> liste_bool(nbF);
+    
 
     verification_2_liste_queues(liste_queues, nbF) ;
     construction_liste_bool(liste_queues, nbF , liste_bool);
