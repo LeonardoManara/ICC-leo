@@ -15,12 +15,12 @@ const string BAD_QUEUE_INDEX("Error: invalid queue index");
 
 void print_error(string message) ;
 void verification_1(string& display_type, int& nbF) ; 
-void verification_2_liste_queues(vector<queue<int> >&liste_queues, int nbF) ;
+void verification_2_liste_queues(vector<queue<int> >&liste_queues, int nbF, vector<int> &taille_queue) ;
 void construction_liste_bool(vector<queue<int> >liste_queues, int nbF , vector<bool> &liste_bool) ; 
 void affiche_etat_initial (vector<queue<int> > liste_queues, int nbF) ; 
-int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, int &nbCycle, int nbF, int &d1, vector<int> &attente_moyenne_NEQLI) ;  
+int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, int &nbCycle, int nbF, int &d1, vector<double> &attente_moyenne_NEQLI) ;  
 int i_non_vide(vector<bool> &liste_bool, int nbF) ; 
-void affiche_attente_moyenne(int nbF,int  nbCycle, vector<int> attente_moyenne_NEQLI) ;
+void affiche_attente_moyenne(int nbF, vector<double> attente_moyenne_NEQLI, vector<int> taille_queue) ;
 
 
 void print_error(string message)
@@ -54,7 +54,7 @@ void verification_1(string& display_type, int& nbF) {
 
 }  
 
-void verification_2_liste_queues(vector<queue<int> >& liste_queues, int nbF) {
+void verification_2_liste_queues(vector<queue<int> >& liste_queues, int nbF, vector<int> &taille_queue) {
 
     int file_attente_arrive, couloir_sortie = 0 ; 
 
@@ -71,7 +71,8 @@ void verification_2_liste_queues(vector<queue<int> >& liste_queues, int nbF) {
             print_error(BAD_QUEUE_INDEX) ; 
         }
 
-        liste_queues[file_attente_arrive].push(couloir_sortie) ; 
+        liste_queues[file_attente_arrive].push(couloir_sortie) ;
+        taille_queue[file_attente_arrive] = taille_queue[file_attente_arrive] + 1 ;
 
         cin >> file_attente_arrive >> couloir_sortie  ;
 
@@ -138,7 +139,7 @@ int i_non_vide(vector<bool> &liste_bool, int nbF) {
 }
 
 
-int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, int &nbCycle, int nbF, int &d1, vector<int> &attente_moyenne_NEQLI) {
+int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, int &nbCycle, int nbF, int &d1, vector<double> &attente_moyenne_NEQLI) {
 
     int i = 0 ;
     int c = 0 ;
@@ -205,12 +206,13 @@ int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, 
 }
 
 
-void affiche_attente_moyenne(int nbF, vector<int> attente_moyenne_NEQLI) {
+void affiche_attente_moyenne(int nbF, vector<double> attente_moyenne_NEQLI, vector<int> taille_queue) {
 
     cout << "Attente moyenne" << endl ; 
+    cout << setprecision(2) << fixed;
     for (int i = 0 ; i < nbF ;  i ++ ) {
 
-        cout << i << "       " << attente_moyenne_NEQLI[i] << endl ;  
+        cout << i << "       " << attente_moyenne_NEQLI[i]/taille_queue[i] << endl ;  
 
     }
 
@@ -227,10 +229,10 @@ int main () {
 
     vector<queue<int> > liste_queues(nbF);
     vector<bool> liste_bool(nbF);
-    vector<int> attente_moyenne_NEQLI ( nbF, 0) ;
-    
+    vector<double> attente_moyenne_NEQLI ( nbF, 0) ;
+    vector<int> taille_queue( nbF, 0) ; 
 
-    verification_2_liste_queues(liste_queues, nbF) ;
+    verification_2_liste_queues(liste_queues, nbF, taille_queue) ;
     construction_liste_bool(liste_queues, nbF , liste_bool);
 
     affiche_etat_initial(liste_queues, nbF) ;
@@ -239,8 +241,7 @@ int main () {
 
     cout << "Déplacement total" << endl ;
     cout << d1 << endl ; 
-    affiche_attente_moyenne(nbF, nbCycle, attente_moyenne_NEQLI) ; 
-    cout << setprecision(2) << fixed;
+    affiche_attente_moyenne(nbF, attente_moyenne_NEQLI, taille_queue) ; 
 
 }
 
