@@ -18,8 +18,9 @@ void verification_1(string& display_type, int& nbF) ;
 void verification_2_liste_queues(vector<queue<int> >&liste_queues, int nbF) ;
 void construction_liste_bool(vector<queue<int> >liste_queues, int nbF , vector<bool> &liste_bool) ; 
 void affiche_etat_initial (vector<queue<int> > liste_queues, int nbF) ; 
-int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, int nbF, int &d1) ;  
+int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, int &nbCycle, int nbF, int &d1, vector<int> &attente_moyenne_NEQLI) ;  
 int i_non_vide(vector<bool> &liste_bool, int nbF) ; 
+void affiche_attente_moyenne(int nbF,int  nbCycle, vector<int> attente_moyenne_NEQLI) ;
 
 
 void print_error(string message)
@@ -137,9 +138,8 @@ int i_non_vide(vector<bool> &liste_bool, int nbF) {
 }
 
 
-int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, int nbF, int &d1) {
+int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, int &nbCycle, int nbF, int &d1, vector<int> &attente_moyenne_NEQLI) {
 
-    int nbCycle = 1 ;
     int i = 0 ;
     int c = 0 ;
     bool iscan = false  ; 
@@ -148,10 +148,9 @@ int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, 
     if (liste_bool[0]) {
         cout << i << "       " ;
         i =  i_non_vide(liste_bool, nbF) ;
-        cout << i << "      " << "0 0" << endl ; 
-             
+        cout << i << "      " << "0 0" << endl ;         
     } 
-    
+
     while (i < nbF ) {
            
             
@@ -162,7 +161,9 @@ int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, 
 
         c = liste_queues[i].front() ;
         liste_queues[i].pop() ;
-        cout << i <<"       "<< c << "        " ; 
+        cout << i <<"       "<< c << "        " ;  
+        attente_moyenne_NEQLI[i] = attente_moyenne_NEQLI[i] + nbCycle ;
+        nbCycle = nbCycle + 1 ;
 
         if (iscan == false) {
             cout << "0 1" << endl ;
@@ -182,7 +183,7 @@ int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, 
         }
 
         i = c ; 
-        nbCycle = nbCycle + 1 ; 
+        
 
         if (liste_bool[i]) {
             cout << i << "       " ; 
@@ -204,15 +205,29 @@ int nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, 
 }
 
 
+void affiche_attente_moyenne(int nbF, vector<int> attente_moyenne_NEQLI) {
+
+    cout << "Attente moyenne" << endl ; 
+    for (int i = 0 ; i < nbF ;  i ++ ) {
+
+        cout << i << "       " << attente_moyenne_NEQLI[i] << endl ;  
+
+    }
+
+}
+
+
 int main () {
 
-    int nbF, d1 = 0 ; 
+    int nbF, d1 = 0 ;
+    int nbCycle = 1 ;
     string display_type ; 
 
     verification_1(display_type, nbF) ;
 
     vector<queue<int> > liste_queues(nbF);
     vector<bool> liste_bool(nbF);
+    vector<int> attente_moyenne_NEQLI ( nbF, 0) ;
     
 
     verification_2_liste_queues(liste_queues, nbF) ;
@@ -220,10 +235,12 @@ int main () {
 
     affiche_etat_initial(liste_queues, nbF) ;
  
-    cout << nombre_de_cycles(liste_queues, liste_bool, nbF, d1) << endl ; 
+    cout << nombre_de_cycles(liste_queues, liste_bool, nbCycle, nbF, d1, attente_moyenne_NEQLI) << endl ; 
 
     cout << "Déplacement total" << endl ;
     cout << d1 << endl ; 
+    affiche_attente_moyenne(nbF, nbCycle, attente_moyenne_NEQLI) ; 
+    cout << setprecision(2) << fixed;
 
 }
 
