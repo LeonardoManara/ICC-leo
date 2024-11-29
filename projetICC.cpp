@@ -18,7 +18,7 @@ void verification_1(string& display_type, int& nbF) ;
 void verification_2_liste_queues(vector<queue<int> >&liste_queues, int nbF, vector<int> &taille_queue) ;
 void construction_liste_bool(vector<queue<int> >liste_queues, int nbF , vector<bool> &liste_bool) ; 
 void affiche_etat_initial (vector<queue<int> > liste_queues, int nbF) ; 
-void nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, int &nbC1, int nbF, int &d1, vector<double> &attente_moyenne_NEQLI) ;  
+void NEQLI(vector<queue<int> >liste_queues, vector<bool> &liste_bool, int &nbC1, int nbF, int &d1, vector<double> &attente_moyenne_NEQLI) ;  
 int i_non_vide(vector<bool> &liste_bool, int nbF) ; 
 void affiche_attente_moyenne(int nbF, vector<double> attente_moyenne_NEQLI, vector<int> taille_queue) ;
 
@@ -100,6 +100,20 @@ void construction_liste_bool(vector<queue<int> >liste_queues, int nbF , vector<b
 
 }
 
+bool all_empty(vector<bool> liste_bool, int nbF) {
+
+    for (int j = 0 ; j < nbF ;  j++) {
+        
+        if (!liste_bool[j]) {
+
+            return true ;
+        }
+
+    }
+
+    return false ;
+}
+
 void affiche_etat_initial (vector<queue<int> > liste_queues, int nbF) {
     
     int i = 0 ; 
@@ -140,7 +154,7 @@ int i_non_vide(vector<bool> &liste_bool, int nbF) {
 
 
 
- void verification_premiere_liste(vector<bool> &liste_bool, int nbF, int &i, int &nbC1, int &d1, string display_type) {
+void verification_premiere_liste(vector<bool> &liste_bool, int nbF, int &i, int &nbC1, int &d1, string display_type) {
 
     if (liste_bool[0]) {
 
@@ -219,7 +233,7 @@ bool extraction_Neqli_2(vector<bool> &liste_bool, int nbF, int &i, int c, int &n
     return false ; 
 }
 
-void nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, int &nbC1, int nbF, int &d1, vector<double> &attente_moyenne_NEQLI, string display_type) {
+void NEQLI(vector<queue<int> >liste_queues, vector<bool> &liste_bool, int &nbC1, int nbF, int &d1, vector<double> &attente_moyenne_NEQLI, string display_type) {
 
     int i = 0 ;
     int c = 0 ;
@@ -283,7 +297,11 @@ void affiche_attente_moyenne(int nbF, vector<double> attente_moyenne_NEQLI, vect
 
 int main () {
 
-    int nbF, nbC1, d1 = 0 ;
+    int nbF = 0  ; 
+    int nbC1 = 0 ; 
+    int nbC2 = 0 ;
+    int d1 = 0 ; 
+    int d2 = 0 ; 
     string display_type ; 
 
     verification_1(display_type, nbF) ;
@@ -297,13 +315,26 @@ int main () {
     construction_liste_bool(liste_queues, nbF , liste_bool);
 
     affiche_etat_initial(liste_queues, nbF) ;
-    nombre_de_cycles(liste_queues, liste_bool, nbC1, nbF, d1, attente_moyenne_NEQLI, display_type) ; 
+
+    if (!all_empty(liste_bool, nbF)) {
+
+        if (display_type == "SHOW_CYCLES"){
+
+            cout << "NEQLI" << endl << "FANEQLI" << endl ; 
+        }
+
+    } else {
+        
+        NEQLI(liste_queues, liste_bool, nbC1, nbF, d1, attente_moyenne_NEQLI, display_type) ;
+
+    }
  
     cout << "Nombre de cycles" << endl ; 
     cout << nbC1 << endl ; 
 
     cout << "Déplacement total" << endl ;
     cout << d1 << endl ; 
+
     affiche_attente_moyenne(nbF, attente_moyenne_NEQLI, taille_queue) ; 
 
 }
