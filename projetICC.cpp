@@ -107,7 +107,7 @@ void affiche_etat_initial (vector<queue<int> > liste_queues, int nbF) {
     
     for ( int i = 0 ;  i < nbF ; i++  ) {
 
-     cout << i << "     " ;
+     cout << i << "       " ;
 
         while(!liste_queues[i].empty()) {
 
@@ -139,19 +139,99 @@ int i_non_vide(vector<bool> &liste_bool, int nbF) {
 }
 
 
-void nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, int &nbC1, int nbF, int &d1, vector<double> &attente_moyenne_NEQLI) {
+
+ void verification_premiere_liste(vector<bool> &liste_bool, int nbF, int &i, int &nbC1, int &d1, string display_type) {
+
+    if (liste_bool[0]) {
+
+        if (display_type == "SHOW_CYCLES"){
+
+            cout << i << "       " ;
+        }
+        i =  i_non_vide(liste_bool, nbF) ;
+
+        if (display_type == "SHOW_CYCLES"){
+
+            cout << i << "      " << "0 0" << endl ;
+        } 
+        nbC1 = nbC1 + 1 ;
+        d1 = d1 + i  ;      
+    }
+}
+
+void extraction_neqli(vector<queue<int> > &liste_queues, vector<double> &attente_moyenne_NEQLI, int &i, int &c ,int  &nbC1,int  &d1, bool iscan, string display_type) {
+
+    c = liste_queues[i].front() ;
+    liste_queues[i].pop() ;
+
+    if (display_type == "SHOW_CYCLES"){
+
+        cout << i <<"       "<< c << "      " ;  
+    }
+
+    attente_moyenne_NEQLI[i] = attente_moyenne_NEQLI[i] + nbC1 ;
+    nbC1 = nbC1 + 1 ;
+    d1 = d1 + abs(c-i) ;
+
+    if (display_type == "SHOW_CYCLES"){
+
+        if (!iscan) {
+
+            cout << "0 1" << endl ;
+
+        }  else { 
+
+            cout << "1 1" << endl ;
+
+        } 
+    }
+
+}
+
+bool extraction_Neqli_2(vector<bool> &liste_bool, int nbF, int &i, int c, int &nbC1, int &d1, bool &iscan, string display_type) {
+
+    if (liste_bool[i]) {
+
+        if (display_type == "SHOW_CYCLES"){
+            cout << i << "       " ; 
+        }
+        i =  i_non_vide(liste_bool, nbF) ; 
+            
+        if (i == nbF) {
+
+            if (display_type == "SHOW_CYCLES"){
+                cout << c << "      "<<"1 0" << endl;
+            }
+
+            return true ; 
+
+        }
+            
+        nbC1 = nbC1 + 1 ; 
+        d1 = d1 + abs(c-i) ;
+
+        if (display_type == "SHOW_CYCLES"){
+            cout << i << "      " << "1 0" << endl ;
+        }
+        iscan = false   ;      
+    }
+
+    return false ; 
+}
+
+void nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool, int &nbC1, int nbF, int &d1, vector<double> &attente_moyenne_NEQLI, string display_type) {
 
     int i = 0 ;
     int c = 0 ;
     bool iscan = false  ; 
     nbC1 = 1 ; 
-    cout << "NEQLI" << endl ; 
+   
+    if (display_type == "SHOW_CYCLES"){
 
-    if (liste_bool[0]) {
-        cout << i << "       " ;
-        i =  i_non_vide(liste_bool, nbF) ;
-        cout << i << "      " << "0 0" << endl ;         
-    } 
+        cout << "NEQLI" << endl ;
+    }
+
+    verification_premiere_liste(liste_bool, nbF, i, nbC1, d1, display_type) ;
 
     while (i < nbF ) {
            
@@ -160,21 +240,8 @@ void nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool,
             break ; 
         }
 
-        c = liste_queues[i].front() ;
-        liste_queues[i].pop() ;
-        cout << i <<"       "<< c << "        " ;  
-        attente_moyenne_NEQLI[i] = attente_moyenne_NEQLI[i] + nbC1 ;
-        nbC1 = nbC1 + 1 ;
-
-        if (iscan == false) {
-            cout << "0 1" << endl ;
-
-        }  else { 
-
-            cout << "1 1" << endl ;
-
-        } 
-        d1 = d1 + abs(c-i) ;
+        extraction_neqli(liste_queues, attente_moyenne_NEQLI, i, c , nbC1, d1, iscan, display_type) ; 
+        
         iscan = true ;
 
         if (liste_queues[i].empty()) {
@@ -185,20 +252,8 @@ void nombre_de_cycles(vector<queue<int> >liste_queues, vector<bool> &liste_bool,
 
         i = c ; 
         
-
-        if (liste_bool[i]) {
-            cout << i << "       " ; 
-            i =  i_non_vide(liste_bool, nbF) ; 
-            
-            if (i == nbF) {
-                cout << c << "        "<<"1 0" << endl;
-                break ; 
-
-            }
-            nbC1 = nbC1 + 1 ; 
-            d1 = d1 + abs(c-i) ;
-            cout << i << "        " << "1 0" << endl ;
-            iscan = false   ;      
+        if (extraction_Neqli_2(liste_bool, nbF, i, c, nbC1, d1, iscan, display_type)) {
+            break; 
         }
     }  
 }
@@ -242,9 +297,9 @@ int main () {
     construction_liste_bool(liste_queues, nbF , liste_bool);
 
     affiche_etat_initial(liste_queues, nbF) ;
-    nombre_de_cycles(liste_queues, liste_bool, nbC1, nbF, d1, attente_moyenne_NEQLI) ; 
+    nombre_de_cycles(liste_queues, liste_bool, nbC1, nbF, d1, attente_moyenne_NEQLI, display_type) ; 
  
-    cout << "nombre de cycles" << endl ; 
+    cout << "Nombre de cycles" << endl ; 
     cout << nbC1 << endl ; 
 
     cout << "Déplacement total" << endl ;

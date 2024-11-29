@@ -30,3 +30,21 @@ int main()
 		
 	return 0;
 }
+
+
+if (liste_bool[i]) {
+
+            cout << i << "       " ; 
+            i =  i_non_vide(liste_bool, nbF) ; 
+            
+            if (i == nbF) {
+                cout << c << "      "<<"1 0" << endl;
+                break ; 
+
+            }
+
+            nbC1 = nbC1 + 1 ; 
+            d1 = d1 + abs(c-i) ;
+            cout << i << "      " << "1 0" << endl ;
+            iscan = false   ;      
+        }
