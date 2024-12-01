@@ -290,7 +290,7 @@ void NEQLI(vector<queue<int> >liste_queues, vector<bool> liste_bool, int &nbC1, 
 void FANEQLI(vector<queue<int> >&liste_queues_F, vector<bool> &liste_bool_F, vector<bool> done, int &nbC2, int nbF, int &d2, vector<double> &attente_moyenne_FANEQLI, string display_type) {
 
     int i = 0, j = 0 , c = 0 ;
-    bool iscan = false  ; 
+    bool iscan = false ; 
     nbC2 = 1 ;
 
     if (display_type == "SHOW_CYCLES"){
@@ -310,6 +310,7 @@ void FANEQLI(vector<queue<int> >&liste_queues_F, vector<bool> &liste_bool_F, vec
             if (done[j]) {
                 
                 i = i_non_vide(done, nbF) ; 
+                iscan = true ; 
 
                 if (i == nbF) {
                     break ; 
@@ -319,7 +320,8 @@ void FANEQLI(vector<queue<int> >&liste_queues_F, vector<bool> &liste_bool_F, vec
                     d2 = d2 + abs(i-j) ; 
                     nbC2 = nbC2 + 1 ; 
                     j = i;
-                    cout << j <<"      " << "0 1" << endl ;
+                    cout << j <<"      " << "1 0" << endl ;
+                    iscan = false ;
                     
                    
                 }
@@ -338,19 +340,21 @@ void FANEQLI(vector<queue<int> >&liste_queues_F, vector<bool> &liste_bool_F, vec
             
             cout << j <<"       "<< c << "      " ; 
 
-            if (!iscan) {
+            if (!done[j] and iscan) {
 
-                cout << "0 1" << endl ;
+                cout << "1 1" << endl ;
+                
 
             }  else { 
 
-                cout << "1 1" << endl ;
+                cout << "0 1" << endl ; 
 
             } 
 
             iscan = true ; 
 
             done[j] = true ; 
+
             if (liste_queues_F[j].empty()) {
 
                 liste_bool_F[j] = true ; 
@@ -371,14 +375,15 @@ void FANEQLI(vector<queue<int> >&liste_queues_F, vector<bool> &liste_bool_F, vec
                 nbC2 = nbC2 + 1 ;
 
                 j = i_non_vide(done, nbF) ; 
-                iscan = false ; 
                 cout << j << "      " << "1 0" << endl ; 
+                iscan = false ; 
             }
-
 
             if (all_empty(liste_bool_F, nbF)) {
 
             break ; 
+
+            
         }
         
 
@@ -458,7 +463,7 @@ int main () {
     cout << nbC1 << "      " << nbC2 << endl ; 
 
     cout << "Déplacement total" << endl ;
-    cout << d1 << "       " << d2 << endl ; 
+    cout << d1 << "      " << d2 << endl ; 
 
     affiche_attente_moyenne(nbF, attente_moyenne_NEQLI, attente_moyenne_FANEQLI, taille_queue) ; 
 
