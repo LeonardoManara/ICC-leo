@@ -91,14 +91,15 @@ void construction_liste_bool(vector<queue<int> >liste_queues, int nbF , vector<b
         if (liste_queues[i].empty()) {
 
             liste_bool_N[i] = true ; 
-            liste_bool_N[i] = true ;
+            liste_bool_F[i] = true ;
 
         } else {
 
                 liste_bool_N[i] = false  ; 
                 liste_bool_F[i] = false  ;
-            }
+        }
 
+ 
     }
 
 }
@@ -283,6 +284,7 @@ void NEQLI(vector<queue<int> >liste_queues, vector<bool> liste_bool, int &nbC1, 
 
             done[j] = true ; 
         }
+
     }
 }
 
