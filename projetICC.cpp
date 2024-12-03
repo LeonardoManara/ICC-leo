@@ -306,6 +306,7 @@ void FANEQLI(vector<queue<int> >&liste_queues_F, vector<bool> &liste_bool_F, vec
         construction_done(liste_bool_F , done, nbF) ;
 
         while (j < nbF) {
+           
 
             if (done[j]) {
                 
@@ -327,9 +328,12 @@ void FANEQLI(vector<queue<int> >&liste_queues_F, vector<bool> &liste_bool_F, vec
                 }
             }
 
+
             if (j == nbF) {
                 break ; 
             }
+
+
 
             c = liste_queues_F[j].front() ;
             liste_queues_F[j].pop() ;
