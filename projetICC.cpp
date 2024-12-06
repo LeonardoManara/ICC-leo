@@ -79,9 +79,13 @@ void verification_2_liste_queues(vector<queue<int> >& queues_N,
  vector<queue<int> >& queues_F, int nbF, vector<int> &taille_queue) {
 
     int f, c = 0 ; 
-    cin >> f >> c  ; 
       
     while ((f >= 0) and (c >= 0)) {
+
+        cin >> f >> c  ;
+        if ((f < 0) or (c < 0)) {
+            break;
+        } 
 
         if ((f >= nbF) or (c >= nbF)) {
             print_error(BAD_QUEUE_INDEX) ; 
@@ -90,8 +94,6 @@ void verification_2_liste_queues(vector<queue<int> >& queues_N,
         queues_N[f].push(c) ;
         queues_F[f].push(c) ;
         taille_queue[f] = taille_queue[f] + 1 ;
-
-        cin >> f >> c  ;
 
     } 
  
@@ -141,7 +143,7 @@ void affiche_etat_initial (vector<queue<int> > liste_queues, int nbF) {
     
     for ( int i = 0 ;  i < nbF ; i++  ) {
 
-     cout << i << "       " ;
+     cout << i << "\t" ;
 
         while(!liste_queues[i].empty()) {
 
@@ -180,13 +182,13 @@ void verification_premiere_liste(vector<bool> liste_bool, int nbF, int &i,
 
         if (display_type == "SHOW_CYCLES"){
 
-            cout << i << "       " ;
+            cout << i << "\t" ;
         }
         i =  i_non_vide(liste_bool, nbF) ;
 
         if (display_type == "SHOW_CYCLES"){
 
-            cout << i << "      " << "0 0" << endl ;
+            cout << i << "\t" << "0 0" << endl ;
         } 
         nbC = nbC + 1 ;
         d = d + i  ;      
@@ -201,7 +203,7 @@ void pop(vector<queue<int> > &liste_queues, vector<bool> &liste_bool,
     liste_queues[i].pop() ;
 
     if (display_type == "SHOW_CYCLES"){
-        cout << i <<"       "<< c << "      " ;  
+        cout << i <<"\t"<< c << "\t" ;  
     }
 
     at_moy[i] = at_moy[i] + nbC ;
@@ -221,14 +223,14 @@ bool NEQLI_1(vector<bool> liste_bool, int nbF, int &i, int c,
     if (liste_bool[i]) {
 
         if (display_type == "SHOW_CYCLES"){
-            cout << i << "       " ; 
+            cout << i << "\t" ; 
         }
         i =  i_non_vide(liste_bool, nbF) ; 
             
         if (i == nbF) {
 
             if (display_type == "SHOW_CYCLES"){
-                cout << c << "      "<<"1 0" << endl;
+                cout << c << "\t"<<"1 0" << endl;
             }
 
             return true ; 
@@ -239,7 +241,7 @@ bool NEQLI_1(vector<bool> liste_bool, int nbF, int &i, int c,
         d1 = d1 + abs(c-i) ;
 
         if (display_type == "SHOW_CYCLES"){
-            cout << i << "      " << "1 0" << endl ;
+            cout << i << "\t" << "1 0" << endl ;
         }
         iscan = false   ;      
     }
@@ -314,7 +316,7 @@ bool FANEQLI_2(vector<bool> done, int &nbC2, int nbF,int &j, int &i, int &d2,
         } else {
             
             if (display_type == "SHOW_CYCLES") {
-                cout << j <<"       " ; 
+                cout << j <<"\t" ; 
             } 
 
             d2 = d2 + abs(i-j) ; 
@@ -322,7 +324,7 @@ bool FANEQLI_2(vector<bool> done, int &nbC2, int nbF,int &j, int &i, int &d2,
             j = i;
 
             if (display_type == "SHOW_CYCLES") {
-                cout << j <<"      " << "1 0" << endl ;
+                cout << j <<"\t" << "1 0" << endl ;
             }    
 
             iscan = false ;
@@ -358,7 +360,7 @@ bool FANEQLI_4(vector<bool> done, vector<bool> bool_F, int &j,
     if (done[j]) {
 
         if (display_type == "SHOW_CYCLES") {
-            cout << j << "       " ;
+            cout << j << "\t" ;
         }
 
         d2 = d2 + abs(j-i_non_vide(done, nbF)) ; 
@@ -367,7 +369,7 @@ bool FANEQLI_4(vector<bool> done, vector<bool> bool_F, int &j,
         j = i_non_vide(done, nbF) ; 
 
         if (display_type == "SHOW_CYCLES") {
-            cout << j << "      " << "1 0" << endl ; 
+            cout << j << "\t" << "1 0" << endl ; 
         }
 
         iscan = false ; 
@@ -383,7 +385,7 @@ bool FANEQLI_4(vector<bool> done, vector<bool> bool_F, int &j,
 void FANEQLI_5(int j, string display_type) {
 
     if (display_type == "SHOW_CYCLES") {
-        cout <<  j << "       " << j << "      " << "1 0" << endl ; 
+        cout <<  j << "\t" << j << "\t" << "1 0" << endl ; 
     } 
 }
 
@@ -438,12 +440,12 @@ void affiche_attente_moyenne(int nbF, vector<double> at_moy_N,
 
     for (int i = 0 ; i < nbF ;  i ++ ) {
 
-        cout << i << "       " ; 
+        cout << i << "\t" ; 
         
         
         if (taille_queue[i] != 0) {
 
-            cout << at_moy_N[i]/taille_queue[i] << "   ";
+            cout << at_moy_N[i]/taille_queue[i] << "\t"; 
             cout << at_moy_F[i]/taille_queue[i] << endl ; 
 
             } else {
@@ -486,10 +488,10 @@ int main () {
     }
  
     cout << "Nombre de cycles" << endl ; 
-    cout << nbC1 << "      " << nbC2 << endl ; 
+    cout << nbC1 << "\t" << nbC2 << endl ; 
 
     cout << "Déplacement total" << endl ;
-    cout << d1 << "      " << d2 << endl ; 
+    cout << d1 << "\t" << d2 << endl ; 
 
     affiche_attente_moyenne(nbF, at_moy_N, at_moy_F, taille_queue) ; 
 
